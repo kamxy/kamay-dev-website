@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { ExternalLinkIcon, CodeIcon } from '@heroicons/react/outline';
+import { CodeIcon } from '@heroicons/react/outline';
 
 interface ProjectCardProps {
     title: string;
@@ -28,31 +28,27 @@ const ProjectCard = ({
     playStore,
     website,
 }: ProjectCardProps) => {
-    const getLinkText = () => {
-        if (appStore) return 'View on App Store';
-        if (playStore) return 'View on Play Store';
-        if (website) return 'Visit Website';
-        return 'Live Demo';
-    };
-
-    const getLinkIcon = () => {
-        if (appStore) return '📱';
-        if (playStore) return '🤖';
-        if (website) return '🌐';
-        return <ExternalLinkIcon className="w-4 h-4" />;
+    const handleClick = () => {
+        if (liveUrl) {
+            window.open(liveUrl, '_blank', 'noopener noreferrer');
+        }
     };
 
     return (
         <motion.div
+            onClick={handleClick}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            whileHover={{ y: -5 }}
+            viewport={{ once: true, margin: "-50px" }}
+            whileHover={{ y: -5, scale: 1.02 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden rounded-xl bg-white/5 backdrop-blur-sm group"
+            className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm group hover:shadow-2xl hover:shadow-primary/20 cursor-pointer"
         >
+            {/* Oval Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-2xl" />
+
             {/* Image Container */}
-            <div className="relative h-48 overflow-hidden">
+            <div className="relative h-48 overflow-hidden rounded-t-2xl">
                 <Image
                     src={image}
                     alt={title}
@@ -61,59 +57,56 @@ const ProjectCard = ({
                     className="transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent" />
-                <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 text-sm font-medium rounded-full bg-primary/20 text-primary">
-                        {category}
-                    </span>
-                </div>
             </div>
 
             {/* Content */}
-            <div className="p-6">
-                <h3 className="text-xl font-bold">{title}</h3>
-                <p className="mt-2 text-dimWhite">{description}</p>
+            <div className="relative p-6 z-10">
+                <motion.h3
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="text-xl font-bold"
+                >
+                    {title}
+                </motion.h3>
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="mt-2 text-dimWhite"
+                >
+                    {description}
+                </motion.p>
 
                 {/* Technologies */}
-                <div className="flex flex-wrap gap-2 mt-4">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="flex flex-wrap gap-2 mt-4"
+                >
                     {technologies.map((tech) => (
                         <span
                             key={tech}
-                            className="px-2 py-1 text-xs font-medium rounded-md bg-white/10 text-dimWhite"
+                            className="px-3 py-1.5 text-xs font-medium rounded-full bg-gray-200/10 text-dimWhite backdrop-blur-sm border border-gray-200/20 shadow-sm"
                         >
                             {tech}
                         </span>
                     ))}
-                </div>
+                </motion.div>
 
-                {/* Links */}
-                <div className="flex gap-4 mt-6">
-                    {liveUrl && (
-                        <a
-                            href={liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm text-primary hover:text-white transition-colors"
-                        >
-                            {typeof getLinkIcon() === 'string' ? (
-                                <span>{getLinkIcon()}</span>
-                            ) : (
-                                getLinkIcon()
-                            )}
-                            {getLinkText()}
-                        </a>
-                    )}
-                    {githubUrl && (
-                        <a
-                            href={githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm text-primary hover:text-white transition-colors"
-                        >
-                            <CodeIcon className="w-4 h-4" />
-                            View Code
-                        </a>
-                    )}
-                </div>
+                {/* Store/Platform Icon */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm rounded-full p-2"
+                >
+                    {appStore && <span className="text-lg">📱</span>}
+                    {playStore && <span className="text-lg">🤖</span>}
+                    {website && <span className="text-lg">🌐</span>}
+                    {githubUrl && <CodeIcon className="w-5 h-5" />}
+                </motion.div>
             </div>
         </motion.div>
     );

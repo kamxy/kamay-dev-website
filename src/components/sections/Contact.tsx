@@ -13,9 +13,21 @@ type FormData = {
 
 const Contact = () => {
     useEffect(() => {
-        if (process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
-            emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
-        }
+        // Initialize EmailJS
+        const initEmailJS = () => {
+            if (process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
+                try {
+                    emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+                    console.log('EmailJS initialized successfully');
+                } catch (error) {
+                    console.error('Failed to initialize EmailJS:', error);
+                }
+            } else {
+                console.error('EmailJS public key is missing');
+            }
+        };
+
+        initEmailJS();
     }, []);
 
     const [formData, setFormData] = useState<FormData>({
@@ -25,23 +37,27 @@ const Contact = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         setSubmitStatus('idle');
+        setErrorMessage('');
 
+        // Validate environment variables
         if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ||
             !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ||
             !process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
-            console.error('EmailJS configuration is missing');
+            setErrorMessage('Email service is not properly configured. Please contact me directly.');
             setSubmitStatus('error');
             setIsSubmitting(false);
             return;
         }
 
         try {
-            await emailjs.send(
+            console.log('Attempting to send email...');
+            const response = await emailjs.send(
                 process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
                 process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
                 {
@@ -53,10 +69,16 @@ const Contact = () => {
                 }
             );
 
+            console.log('Email sent successfully:', response);
             setSubmitStatus('success');
             setFormData({ name: '', email: '', message: '' });
         } catch (error) {
             console.error('Failed to send email:', error);
+            setErrorMessage(
+                error instanceof Error
+                    ? `Error: ${error.message}`
+                    : 'Failed to send message. Please try again or contact me directly.'
+            );
             setSubmitStatus('error');
         } finally {
             setIsSubmitting(false);
@@ -147,7 +169,7 @@ const Contact = () => {
                             )}
                             {submitStatus === 'error' && (
                                 <p className="text-red-500 text-sm text-center">
-                                    Failed to send message. Please try again or contact me directly at {PERSONAL_DATA.email}
+                                    {errorMessage || `Failed to send message. Please try again or contact me directly at ${PERSONAL_DATA.email}`}
                                 </p>
                             )}
                         </form>
@@ -210,4 +232,4 @@ const Contact = () => {
     );
 };
 
-export default Contact; 
+export default Contact;

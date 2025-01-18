@@ -6,6 +6,7 @@ import About from '@/components/sections/About';
 import Projects from '@/components/sections/Projects';
 import Contact from '@/components/sections/Contact';
 import ProfileImage from '@/components/ui/ProfileImage';
+import FollowBanner from '@/components/sections/FollowBanner';
 import { scrollToSection } from '@/utils/scroll';
 
 const Home = () => {
@@ -18,11 +19,11 @@ const Home = () => {
         <Layout>
             <Head>
                 <title>Mehmet Kamay - Portfolio</title>
-                <meta name="description" content="Personal portfolio of Mehmet Kamay - Software Developer specializing in iOS and Web Development" />
+                <meta name="description" content="Personal portfolio of Mehmet Kamay - Software Developer specializing in Mobile and Web Development" />
                 <meta name="keywords" content="Mehmet Kamay, iOS Developer, Web Developer, Software Engineer, Portfolio" />
                 <meta name="author" content="Mehmet Kamay" />
                 <meta property="og:title" content="Mehmet Kamay - Portfolio" />
-                <meta property="og:description" content="Personal portfolio of Mehmet Kamay - Software Developer specializing in iOS and Web Development" />
+                <meta property="og:description" content="Personal portfolio of Mehmet Kamay - Software Developer specializing in Mobile and Web Development" />
                 <meta property="og:type" content="website" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:creator" content="@kamaymehmet" />
@@ -40,9 +41,9 @@ const Home = () => {
                         Hi, I'm <span className="text-primary">Mehmet Kamay</span>
                     </h1>
                     <p className="mt-4 subheading">
-                        Software Developer specializing in iOS and Web Development
+                        Software Developer specializing in Mobile and Web Development
                     </p>
-                    <div className="flex gap-4 mt-8">
+                    <div className="flex justify-center gap-4 mt-8">
                         <a
                             href="#projects"
                             onClick={(e) => handleNavClick(e, '#projects')}
@@ -64,6 +65,7 @@ const Home = () => {
             <About />
             <Projects />
             <Contact />
+            <FollowBanner />
         </Layout>
     );
 };

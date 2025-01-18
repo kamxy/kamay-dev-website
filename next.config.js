@@ -4,7 +4,8 @@ const nextConfig = {
     images: {
         unoptimized: true,
     },
-    trailingSlash: true,
+    poweredByHeader: false,
+    compress: true,
 }
 
-module.exports = nextConfig 
+module.exports = nextConfig

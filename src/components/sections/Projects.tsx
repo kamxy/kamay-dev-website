@@ -50,39 +50,6 @@ const Projects = () => {
                         ))}
                     </AnimatePresence>
                 </motion.div>
-
-                {/* Additional Info */}
-                <div className="text-center mt-8">
-                    <p className="text-dimWhite">
-                        {PERSONAL_DATA.achievement}
-                    </p>
-                    <div className="mt-4 space-y-2">
-                        <a
-                            href={SOCIAL_LINKS.medium}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary hover:text-white transition-colors block"
-                        >
-                            ✍️ Read my articles on Medium
-                        </a>
-                        <a
-                            href={SOCIAL_LINKS.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary hover:text-white transition-colors block"
-                        >
-                            💻 View more projects on GitHub
-                        </a>
-                        <a
-                            href={SOCIAL_LINKS.twitter}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary hover:text-white transition-colors block"
-                        >
-                            🐦 Follow @buildwithswift on Twitter
-                        </a>
-                    </div>
-                </div>
             </div>
         </Section>
     );
